@@ -1,10 +1,26 @@
-package test;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package utils;
 
+import Utils.Reader;
 import acs.jni.ACR120U;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
+/**
+ *
+ * @author Anselmus
+ */
+public class ReaderTest {
 
-public class TesRFID {
-    public static void main(String[] arg){
+    /**
+     * Test of getNIM method, of class Reader.
+     */
+    @Test
+    public void testGetNIM() {
+        System.out.println("Testing Get NIM");
         ACR120U acr = new ACR120U();
         short s = acr.open((short)0);
         acr.status((short)0);
