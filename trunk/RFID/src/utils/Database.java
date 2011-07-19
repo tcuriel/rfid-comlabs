@@ -32,7 +32,7 @@ public class Database {
         return mSingleton;
     }
 
-    public Database() {
+    private Database() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             mConnection = DriverManager.getConnection(mDBName, mDBUser, mDBPass);

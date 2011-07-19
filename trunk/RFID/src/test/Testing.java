@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class Testing {
     public static void main(String[] args) {
         try {
-            ArrayList<User> tResult = Helper.parseCSV("FMIPA.csv");
+            ArrayList<User> tResult = Helper.parseCSV("./others/FMIPA.csv");
             for (User user : tResult) {
                 System.out.println("Username : " + user.getmUsername());
                 System.out.println("Password : " + user.getmPassword());

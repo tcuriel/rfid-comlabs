@@ -1,3 +1,4 @@
+package test;
 
 import acs.jni.ACR120U;
 
