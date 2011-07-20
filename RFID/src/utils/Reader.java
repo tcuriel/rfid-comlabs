@@ -19,7 +19,7 @@ public class Reader {
     private short mConnHandler;
     private final byte[] pKey = {
         (byte) 0x11, (byte) 0xF1,
-        (byte) 0x22, (byte) 0xF3,
+        (byte) 0x22, (byte) 0xF2,
         (byte) 0x33, (byte) 0xF3
     };
 
@@ -32,8 +32,8 @@ public class Reader {
 
     public Reader() {
         try {
-            System.load("./libs/ACR120UJNI.dll");
-            System.load("./libs/ACR120U.dll");
+            System.load("D:\\kuliah\\comlabs\\RnD\\RFID\\RFID\\libs\\ACR120UJNI.dll");
+            System.load("D:\\kuliah\\comlabs\\RnD\\RFID\\RFID\\libs\\ACR120U.dll");
         } catch (Exception ex) {
             System.out.println("Cannot load library : " + ex.getMessage());
         }
@@ -88,16 +88,21 @@ public class Reader {
             byte tKeyType = (byte) ACR120U.AC_MIFARE_LOGIN_KEYTYPE_A;
             byte tStoreNo = (byte) 0x00;
             short tLoginResult = mACR.login(mConnHandler, tSector, tKeyType, tStoreNo, pKey);
-            if (tLoginResult == 0) {
-                byte tBlock = (byte) 0x01;
+            if (tLoginResult == (short) 0) {
+                byte tBlock = (byte) 0x41;
                 byte[] tRead = new byte[16];
                 short tReadResult = mACR.read(mConnHandler, tBlock, tRead);
                 if (tReadResult == (short) 0) {
                     StringBuilder tBuilder = new StringBuilder();
                     for (int i = 2; i < 16; i++) {
-                        tBuilder.append(tRead[i]);
+                        if (tRead[i] != 0) {
+                            System.out.println(tRead[i]);
+                            tBuilder.append((char) tRead[i]);
+                        }
                     }
-                    tReturn = doDecrypt(tBuilder.toString(), "key");
+                    System.out.println(tBuilder.toString());
+                    System.out.println(new String(getSerial()));
+                    tReturn = doDecrypt(tBuilder.toString(), new String(getSerial()));
                 } else {
                     System.out.println("Read process failed");
                 }
@@ -118,8 +123,8 @@ public class Reader {
             byte tKeyType = (byte) ACR120U.AC_MIFARE_LOGIN_KEYTYPE_A;
             byte tStoreNo = (byte) 0x00;
             short tLoginResult = mACR.login(mConnHandler, tSector, tKeyType, tStoreNo, pKey);
-            if (tLoginResult == 0) {
-                byte tBlock = (byte) 0x01;
+            if (tLoginResult == (short) 0) {
+                byte tBlock = (byte) 0x41;
                 byte[] tRead = new byte[16];
                 short tReadResult = mACR.read(mConnHandler, tBlock, tRead);
                 if (tReadResult == (short) 0) {
@@ -145,7 +150,7 @@ public class Reader {
             byte tStoreNo = (byte) 0x00;
             short tLoginResult = mACR.login(mConnHandler, tSector, tKeyType, tStoreNo, pKey);
             if (tLoginResult == 0) {
-                byte tBlock = (byte) 0x01;
+                byte tBlock = (byte) 0x41;
                 byte[] tRead = new byte[16];
                 short tReadResult = mACR.read(mConnHandler, tBlock, tRead);
                 if (tReadResult == (short) 0) {
