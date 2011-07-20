@@ -7,7 +7,6 @@ package utils;
 import Utils.Reader;
 import acs.jni.ACR120U;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
