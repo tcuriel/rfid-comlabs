@@ -5,6 +5,7 @@
 package Utils;
 
 import acs.jni.ACR120U;
+import com.sun.xml.internal.fastinfoset.util.CharArray;
 import java.util.Arrays;
 
 /**
@@ -50,22 +51,37 @@ public class Reader {
         if (pKey.length() >= 8) {
             StringBuilder tBuilder = new StringBuilder();
             byte[] tTemp = new byte[3];
-            tTemp[0] = (byte) pKey.charAt(1);
-            tTemp[1] = (byte) pKey.charAt(3);
-            tTemp[2] = (byte) pKey.charAt(4);
+            tTemp[0] = Byte.valueOf("" + pKey.charAt(1),16);
+            tTemp[1] = Byte.valueOf("" + pKey.charAt(3),16);
+            tTemp[2] = Byte.valueOf("" + pKey.charAt(4),16);
             int j = 0;
             for (int i = 0; i < pChiperText.length(); i++) {
-                tBuilder.append((byte) pChiperText.charAt(i) ^ tTemp[j]);
-                if (j < 3) {
+                tBuilder.append((char)(pChiperText.charAt(i) ^ tTemp[j]));
+                if (j < 2) {
                     j++;
                 } else {
-                    j = 1;
+                    j = 0;
                 }
             }
             return tBuilder.toString();
         } else {
             return null;
         }
+    }
+
+    private String doConvertSerial() {
+        StringBuilder tBuilder = new StringBuilder();
+        for (int i = 0; i < mSerial.length; i++) {
+            byte b = mSerial[i];
+            if (b < 0) {
+                tBuilder.append(Integer.toHexString(b).toUpperCase().substring(Integer.toHexString(b).length() - 2, Integer.toHexString(b).length()));
+            } else if (b < 16) {
+                tBuilder.append('0').append(Integer.toHexString(b).toUpperCase());
+            } else {
+                tBuilder.append(Integer.toHexString(b).toUpperCase());
+            }
+        }
+        return tBuilder.toString();
     }
 
     public ACR120U getACR() {
@@ -96,13 +112,10 @@ public class Reader {
                     StringBuilder tBuilder = new StringBuilder();
                     for (int i = 2; i < 16; i++) {
                         if (tRead[i] != 0) {
-                            System.out.println(tRead[i]);
                             tBuilder.append((char) tRead[i]);
                         }
                     }
-                    System.out.println(tBuilder.toString());
-                    System.out.println(new String(getSerial()));
-                    tReturn = doDecrypt(tBuilder.toString(), new String(getSerial()));
+                    tReturn = doDecrypt(tBuilder.toString(), doConvertSerial());
                 } else {
                     System.out.println("Read process failed");
                 }
