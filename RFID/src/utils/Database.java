@@ -21,7 +21,7 @@ public class Database {
     private static Database mSingleton = new Database();
     private Statement mStatement;
     private Connection mConnection;
-    private String mDBName = "jdbc:mysql://localhost/rfid";
+    private String mDBName = "jdbc:mysql://localhost/absenpti";
     private String mDBUser = "root";
     private String mDBPass = "";
 
