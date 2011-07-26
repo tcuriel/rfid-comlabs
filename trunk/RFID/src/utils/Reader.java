@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author asus-K40IJ
  */
 public class Reader {
-
+    private String base_path = "D:\\kuliah\\comlabs\\RnD\\RFID\\RFID\\";
     private static Reader mSingleton = new Reader();
     private ACR120U mACR = new ACR120U();
     private byte[] mSerial = new byte[4];
@@ -33,8 +33,8 @@ public class Reader {
 
     public Reader() {
         try {
-            System.load("D:\\kuliah\\comlabs\\RnD\\RFID\\RFID\\libs\\ACR120UJNI.dll");
-            System.load("D:\\kuliah\\comlabs\\RnD\\RFID\\RFID\\libs\\ACR120U.dll");
+            System.load(base_path+"ACR120UJNI.dll");
+            System.load(base_path+"ACR120U.dll");
         } catch (Exception ex) {
             System.out.println("Cannot load library : " + ex.getMessage());
         }
