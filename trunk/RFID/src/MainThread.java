@@ -1,12 +1,19 @@
 
 import Utils.Reader;
 import Utils.Database;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /*
  * To change this template, choose Tools | Templates
@@ -81,6 +88,20 @@ public class MainThread extends Thread {
                     report.getFakultas().setText(res.getString("fakultas"));
                     report.getShift().setText(res.getString("shift"));
                     //System.out.println("berhasil masuk");
+                    URL url = this.getClass().getClassLoader().getResource("beep-6.wav");
+                    try {
+                        AudioInputStream tAudio = AudioSystem.getAudioInputStream(url);
+                        Clip tClip = AudioSystem.getClip();
+                        tClip.open(tAudio);
+                        tClip.start();
+                    } catch (LineUnavailableException ex) {
+                        Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (UnsupportedAudioFileException ex) {
+                        Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
                 }
             }
         }
