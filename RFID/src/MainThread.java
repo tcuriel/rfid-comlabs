@@ -102,6 +102,20 @@ public class MainThread extends Thread {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
+                } else {
+                    URL url = this.getClass().getClassLoader().getResource("./others/beep-5.wav");
+                    try {
+                        AudioInputStream tAudio = AudioSystem.getAudioInputStream(url);
+                        Clip tClip = AudioSystem.getClip();
+                        tClip.open(tAudio);
+                        tClip.start();
+                    } catch (LineUnavailableException ex) {
+                        Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (UnsupportedAudioFileException ex) {
+                        Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
