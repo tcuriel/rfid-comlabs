@@ -36,8 +36,8 @@ public class MainThread extends Thread {
     public void run() {
         while (true) {
             try {
-                if (Reader.getSingleton().getNX() != null) {
-                    String nim = Reader.getSingleton().getNX();
+                if (Reader.getSingleton().getNX(16,1) != null) {
+                    String nim = Reader.getSingleton().getNX(16,1);
 //                    System.out.println("NIM : " + Reader.getSingleton().getNX());
                     GregorianCalendar cal = new GregorianCalendar();
                     long jam = cal.get(Calendar.HOUR_OF_DAY);
@@ -88,7 +88,7 @@ public class MainThread extends Thread {
                     report.getFakultas().setText(res.getString("fakultas"));
                     report.getShift().setText(res.getString("shift"));
                     //System.out.println("berhasil masuk");
-                    URL url = this.getClass().getClassLoader().getResource("beep-6.wav");
+                    URL url = this.getClass().getClassLoader().getResource("./others/beep-6.wav");
                     try {
                         AudioInputStream tAudio = AudioSystem.getAudioInputStream(url);
                         Clip tClip = AudioSystem.getClip();

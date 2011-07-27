@@ -6,6 +6,7 @@
 package utils;
 
 import Utils.Reader;
+import java.io.File;
 import org.junit.Test;
 
 /**
@@ -19,16 +20,16 @@ public class ReaderTest {
      */
     @Test
     public void testGetNX() {
-        System.out.println("NIM : " + Reader.getSingleton().getNX());
+        System.out.println("NIM : " + Reader.getSingleton().getNX(16,1));
     }
 
     @Test
     public void testGetIE() {
-        System.out.println("IE : " + Reader.getSingleton().getIE());
+        System.out.println("IE : " + Reader.getSingleton().getIE(16,1));
     }
 
     @Test
     public void testGetMP() {
-        System.out.println("MP : " + Reader.getSingleton().getMP());
+        System.out.println("MP : " + Reader.getSingleton().getMP(16,1));
     }
 }

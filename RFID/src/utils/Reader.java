@@ -5,7 +5,7 @@
 package Utils;
 
 import acs.jni.ACR120U;
-import com.sun.xml.internal.fastinfoset.util.CharArray;
+import java.io.File;
 import java.util.Arrays;
 
 /**
@@ -13,7 +13,6 @@ import java.util.Arrays;
  * @author asus-K40IJ
  */
 public class Reader {
-    private String base_path = "D:\\rfid-comlabs\\RFID\\";
     private static Reader mSingleton = new Reader();
     private ACR120U mACR = new ACR120U();
     private byte[] mSerial = new byte[4];
@@ -33,8 +32,10 @@ public class Reader {
 
     public Reader() {
         try {
-            System.load(base_path+"ACR120UJNI.dll");
-            System.load(base_path+"ACR120U.dll");
+            File tFile1 = new File("./ACR120UJNI.dll"); 
+            File tFile2 = new File("./ACR120U.dll"); 
+            System.load(tFile1.getCanonicalPath());
+            System.load(tFile2.getCanonicalPath());
         } catch (Exception ex) {
             System.out.println("Cannot load library : " + ex.getMessage());
         }
@@ -96,16 +97,16 @@ public class Reader {
         return mSerial;
     }
 
-    public String getNX() {
+    public String getNX(int pNXSector, int pBlockSector) {
         String tReturn = null;
         short tSelectResult = doSelect();
         if (tSelectResult == (short) 0) {
-            byte tSector = (byte) 0x10;
+            byte tSector = (byte) pNXSector;
             byte tKeyType = (byte) ACR120U.AC_MIFARE_LOGIN_KEYTYPE_A;
             byte tStoreNo = (byte) 0x00;
             short tLoginResult = mACR.login(mConnHandler, tSector, tKeyType, tStoreNo, pKey);
             if (tLoginResult == (short) 0) {
-                byte tBlock = (byte) 0x41;
+                byte tBlock = (byte) (pBlockSector + pNXSector*4);
                 byte[] tRead = new byte[16];
                 short tReadResult = mACR.read(mConnHandler, tBlock, tRead);
                 if (tReadResult == (short) 0) {
@@ -128,16 +129,16 @@ public class Reader {
         return tReturn;
     }
 
-    public int getIE() {
+    public int getIE(int pNXSector, int pBlockSector) {
         int tReturn = -1;
         short tSelectResult = doSelect();
         if (tSelectResult == (short) 0) {
-            byte tSector = (byte) 0x10;
+            byte tSector = (byte) pNXSector;
             byte tKeyType = (byte) ACR120U.AC_MIFARE_LOGIN_KEYTYPE_A;
             byte tStoreNo = (byte) 0x00;
             short tLoginResult = mACR.login(mConnHandler, tSector, tKeyType, tStoreNo, pKey);
             if (tLoginResult == (short) 0) {
-                byte tBlock = (byte) 0x41;
+                byte tBlock = (byte) (pBlockSector + pNXSector*4);
                 byte[] tRead = new byte[16];
                 short tReadResult = mACR.read(mConnHandler, tBlock, tRead);
                 if (tReadResult == (short) 0) {
@@ -154,16 +155,16 @@ public class Reader {
         return tReturn;
     }
 
-    public int getMP() {
+    public int getMP(int pNXSector, int pBlockSector) {
         int tReturn = -1;
         short tSelectResult = doSelect();
         if (tSelectResult == (short) 0) {
-            byte tSector = (byte) 0x10;
+            byte tSector = (byte) pNXSector;
             byte tKeyType = (byte) ACR120U.AC_MIFARE_LOGIN_KEYTYPE_A;
             byte tStoreNo = (byte) 0x00;
             short tLoginResult = mACR.login(mConnHandler, tSector, tKeyType, tStoreNo, pKey);
             if (tLoginResult == 0) {
-                byte tBlock = (byte) 0x41;
+                byte tBlock = (byte) (pBlockSector + pNXSector*4);
                 byte[] tRead = new byte[16];
                 short tReadResult = mACR.read(mConnHandler, tBlock, tRead);
                 if (tReadResult == (short) 0) {
