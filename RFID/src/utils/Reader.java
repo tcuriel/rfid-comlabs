@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author asus-K40IJ
  */
 public class Reader {
-    private String base_path = "D:\\kuliah\\comlabs\\RnD\\RFID\\RFID\\";
+    private String base_path = "D:\\rfid-comlabs\\RFID\\";
     private static Reader mSingleton = new Reader();
     private ACR120U mACR = new ACR120U();
     private byte[] mSerial = new byte[4];
