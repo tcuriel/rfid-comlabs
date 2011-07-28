@@ -67,7 +67,7 @@ public class Database {
         try {
             mStatement.executeUpdate(pQuery, Statement.RETURN_GENERATED_KEYS);
             ResultSet tTemp = mStatement.getGeneratedKeys();
-            tReturn = tTemp.getLong(1);
+            //tReturn = tTemp.getLong(1);
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }

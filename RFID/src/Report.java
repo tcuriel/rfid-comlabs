@@ -1,11 +1,13 @@
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class Report extends javax.swing.JFrame {
 
     MainThread ntret;
     public Report() {
         ntret = new MainThread(this);
+        ntret.start();
         initComponents();
     }
 
@@ -81,7 +83,9 @@ public class Report extends javax.swing.JFrame {
         this.waktu = waktu;
     }
 
-    
+    public void gagalAbsen(){
+        JOptionPane.showMessageDialog(this, "Anda sudah absen");
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -180,6 +184,7 @@ public class Report extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 new Report().setVisible(true);
             }

@@ -1,6 +1,7 @@
 
 import Utils.Reader;
 import Utils.Database;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -27,6 +28,7 @@ public class MainThread extends Thread {
 
     public Database result = Database.getSingleton();
     private Report report;
+    private boolean isSama = false;
 
     public MainThread(Report report) {
         this.report = report;
@@ -36,20 +38,25 @@ public class MainThread extends Thread {
     public void run() {
         while (true) {
             try {
-                if (Reader.getSingleton().getNX(16,1) != null) {
-                    String nim = Reader.getSingleton().getNX(16,1);
+                if (Reader.getSingleton().getNX(16, 1) != null) {
+                    if (!isSama) {
+                        String nim = Reader.getSingleton().getNX(16, 1);
 //                    System.out.println("NIM : " + Reader.getSingleton().getNX());
-                    GregorianCalendar cal = new GregorianCalendar();
-                    long jam = cal.get(Calendar.HOUR_OF_DAY);
-                    long menit = cal.get(Calendar.MINUTE);
-                    long detik = cal.get(Calendar.SECOND);
-                    long tahun = cal.get(Calendar.YEAR);
-                    long bulan = (cal.get(Calendar.MONTH) + 1);
-                    long tanggal = cal.get(Calendar.DATE);
-                    //2011-07-26 01:58:40
-                    String date = tahun + "-" + bulan + "-" + tanggal + " " + jam + ":" + menit + ":" + detik;
-                    System.out.println(date + "|" + nim);
-                    cek_database(nim, date);
+                        GregorianCalendar cal = new GregorianCalendar();
+                        long jam = cal.get(Calendar.HOUR_OF_DAY);
+                        long menit = cal.get(Calendar.MINUTE);
+                        long detik = cal.get(Calendar.SECOND);
+                        long tahun = cal.get(Calendar.YEAR);
+                        long bulan = (cal.get(Calendar.MONTH) + 1);
+                        long tanggal = cal.get(Calendar.DATE);
+                        //2011-07-26 01:58:40
+                        String date = tahun + "-" + bulan + "-" + tanggal + " " + jam + ":" + menit + ":" + detik;
+                        System.out.println(date + "|" + nim);
+                        cek_database(nim, date);
+                        isSama = true;
+                    }
+                } else {
+                    isSama = false;
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,24 +80,27 @@ public class MainThread extends Thread {
             int idkelas = hasil.getInt("idkelas");
             pQuery = "SELECT * FROM pertemuan WHERE idkelas = " + idkelas + " AND mulai < '" + date + "' AND akhir > '" + date + "'";
             hasil = result.getQuery(pQuery);
-            
+
             if (hasil.next()) {
                 int pertemuan = hasil.getInt("idkelas");
                 pQuery = "SELECT * FROM absen WHERE idkelas = " + idkelas + " AND nim = " + nim + " AND pertemuan = '" + pertemuan + "'";
                 hasil = result.getQuery(pQuery);
-                String query = "SELECT * FROM kelas WHERE idkelas = " + idkelas;
-                ResultSet res = result.getQuery(query);
+
                 if (!(hasil.next())) {
                     pQuery = "INSERT INTO absen (nim,idkelas,pertemuan) VALUES (" + nim + "," + idkelas + "," + pertemuan + ")";
                     hasildo = result.doQuery(pQuery);
+                    String query = "SELECT * FROM kelas WHERE id = " + idkelas;
+                    System.out.println("" + query);
+                    ResultSet res = result.getQuery(query);
+                    res.next();
                     report.getNim().setText(nim);
                     report.getWaktu().setText(date);
                     report.getFakultas().setText(res.getString("fakultas"));
-                    report.getShift().setText(res.getString("shift"));
-                    //System.out.println("berhasil masuk");
-                    URL url = this.getClass().getClassLoader().getResource("./others/beep-6.wav");
+                    report.getShift().setText("" + res.getString("shift"));
+                    System.out.println(nim + " berhasil masuk");
+                    File tFile = new File("./others/beep-6.wav");
                     try {
-                        AudioInputStream tAudio = AudioSystem.getAudioInputStream(url);
+                        AudioInputStream tAudio = AudioSystem.getAudioInputStream(tFile);
                         Clip tClip = AudioSystem.getClip();
                         tClip.open(tAudio);
                         tClip.start();
@@ -101,11 +111,12 @@ public class MainThread extends Thread {
                     } catch (IOException ex) {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
                 } else {
-                    URL url = this.getClass().getClassLoader().getResource("./others/beep-5.wav");
+//                    report.gagalAbsen();
+                    System.out.println("Ada masalah di sini");
+                    File tFile = new File("./others/beep-5.wav");
                     try {
-                        AudioInputStream tAudio = AudioSystem.getAudioInputStream(url);
+                        AudioInputStream tAudio = AudioSystem.getAudioInputStream(tFile);
                         Clip tClip = AudioSystem.getClip();
                         tClip.open(tAudio);
                         tClip.start();
@@ -117,7 +128,11 @@ public class MainThread extends Thread {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+            } else {
+                System.out.println("Ada masalah");
             }
+        } else {
+            System.out.println("Ada masalah");
         }
 
     }
