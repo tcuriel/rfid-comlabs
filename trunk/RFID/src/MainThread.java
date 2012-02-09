@@ -82,7 +82,7 @@ public class MainThread extends Thread {
             hasil = result.getQuery(pQuery);
 
             if (hasil.next()) {
-                int pertemuan = hasil.getInt("idkelas");
+                int pertemuan = hasil.getInt("pertemuan");
                 pQuery = "SELECT * FROM absen WHERE idkelas = " + idkelas + " AND nim = " + nim + " AND pertemuan = '" + pertemuan + "'";
                 hasil = result.getQuery(pQuery);
 
@@ -110,6 +110,8 @@ public class MainThread extends Thread {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
 //                    report.gagalAbsen();
@@ -126,7 +128,9 @@ public class MainThread extends Thread {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    } catch (Exception ex) {
+                        Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
                 }
             } else {
                 System.out.println("Ada masalah");
