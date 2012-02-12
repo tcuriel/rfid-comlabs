@@ -29,6 +29,7 @@ public class MainThread extends Thread {
     public Database result = Database.getSingleton();
     private Report report;
     private boolean isSama = false;
+    private boolean isSoundEnable = true;
 
     public MainThread(Report report) {
         this.report = report;
