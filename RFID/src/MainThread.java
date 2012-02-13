@@ -29,10 +29,16 @@ public class MainThread extends Thread {
     public Database result = Database.getSingleton();
     private Report report;
     private boolean isSama = false;
-    private boolean isSoundEnable = true;
+    private String currDate = "";
+    private GregorianCalendar cal;
 
     public MainThread(Report report) {
         this.report = report;
+        cal = new GregorianCalendar();
+        long tahun = cal.get(Calendar.YEAR);
+        long bulan = (cal.get(Calendar.MONTH) + 1);
+        long tanggal = cal.get(Calendar.DATE);
+        currDate = tanggal + "/" + bulan + "/" + tahun;
     }
 
     @Override
@@ -42,22 +48,17 @@ public class MainThread extends Thread {
                 if (Reader.getSingleton().getNX(16, 1) != null) {
                     if (!isSama) {
                         String nim = Reader.getSingleton().getNX(16, 1);
-                        GregorianCalendar cal = new GregorianCalendar();
                         long jam = cal.get(Calendar.HOUR_OF_DAY);
                         long menit = cal.get(Calendar.MINUTE);
                         long detik = cal.get(Calendar.SECOND);
-                        long tahun = cal.get(Calendar.YEAR);
-                        long bulan = (cal.get(Calendar.MONTH) + 1);
-                        long tanggal = cal.get(Calendar.DATE);
-                        String date = tahun + "-" + bulan + "-" + tanggal + " " + jam + ":" + menit + ":" + detik;
-                        System.out.println(date + "|" + nim);
-                        cek_database(nim, date);
+                        String time = jam + ":" + menit + ":" + detik;
+                        cek_database(nim, time, "RFID");
                         isSama = true;
                     }
                 } else {
                     isSama = false;
                 }
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
@@ -70,33 +71,29 @@ public class MainThread extends Thread {
 
     }
 
-    public void cek_database(String nim, String date) throws SQLException {
+    public void cek_database(String nim, String time, String ket) throws SQLException {
 
-        String pQuery = "SELECT * FROM mahasiswa WHERE nim = " + nim;
+        String pQuery = "SELECT * FROM asisten_pti_praktikan WHERE nim = " + nim;
         ResultSet hasil = result.getQuery(pQuery);
-        long hasildo;
         if (hasil.next()) {
-            int idkelas = hasil.getInt("idkelas");
-            pQuery = "SELECT * FROM pertemuan WHERE idkelas = " + idkelas + " AND mulai < '" + date + "' AND akhir > '" + date + "'";
+            int idkelas = hasil.getInt("id_kelas");
+            pQuery = "SELECT * FROM asisten_pti_pertemuan WHERE id_kelas = " + idkelas + " AND absen_buka < '" + time + "' AND absen_tutup > '" + time + "'";
             hasil = result.getQuery(pQuery);
-
             if (hasil.next()) {
-                int pertemuan = hasil.getInt("pertemuan");
-                pQuery = "SELECT * FROM absen WHERE idkelas = " + idkelas + " AND nim = " + nim + " AND pertemuan = '" + pertemuan + "'";
+                int pertemuan = hasil.getInt("id_pertemuan");
+                pQuery = "SELECT * FROM asisten_pti_absen_praktikan WHERE nim = " + nim + " AND id_pertemuan = '" + pertemuan + "'";
                 hasil = result.getQuery(pQuery);
-
                 if (!(hasil.next())) {
-                    pQuery = "INSERT INTO absen (nim,idkelas,pertemuan) VALUES (" + nim + "," + idkelas + "," + pertemuan + ")";
-                    hasildo = result.doQuery(pQuery);
-                    String query = "SELECT * FROM kelas WHERE id = " + idkelas;
-                    System.out.println("" + query);
+                    pQuery = "INSERT INTO asisten_pti_absen_praktikan (nim,id_pertemuan,keterangan) VALUES (" + nim + "," + pertemuan + "," + ket + ")";
+                    result.doQuery(pQuery);
+                    String query = "SELECT * FROM asisten_pti_kelas WHERE id_kelas = " + idkelas;
                     ResultSet res = result.getQuery(query);
                     res.next();
-                    report.getNim().setText(nim);
-                    report.getWaktu().setText(date);
-                    report.getFakultas().setText(res.getString("fakultas"));
-                    report.getShift().setText("" + res.getString("shift"));
-                    System.out.println(nim + " berhasil masuk");
+                    report.getNIM().setText(nim);
+                    report.getDate().setText(currDate);
+                    report.getTime().setText(time);
+                    report.getKelas().setText("" + res.getString("shift"));
+                    report.berhasilAbsen();
                     File tFile = new File("./others/beep-6.wav");
                     try {
                         AudioInputStream tAudio = AudioSystem.getAudioInputStream(tFile);
@@ -113,8 +110,7 @@ public class MainThread extends Thread {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
-//                    report.gagalAbsen();
-                    System.out.println("Ada masalah di sini");
+                    report.gagalAbsen();
                     File tFile = new File("./others/beep-5.wav");
                     try {
                         AudioInputStream tAudio = AudioSystem.getAudioInputStream(tFile);
@@ -129,13 +125,13 @@ public class MainThread extends Thread {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (Exception ex) {
                         Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
-                    } 
+                    }
                 }
             } else {
-                System.out.println("Ada masalah");
+                report.kelasSalah();
             }
         } else {
-            System.out.println("Ada masalah");
+            report.nimSalah();
         }
 
     }
