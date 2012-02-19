@@ -84,7 +84,7 @@ public class MainThread extends Thread {
                 pQuery = "SELECT * FROM asisten_pti_absen_praktikan WHERE nim = " + nim + " AND id_pertemuan = '" + pertemuan + "'";
                 hasil = result.getQuery(pQuery);
                 if (!(hasil.next())) {
-                    pQuery = "INSERT INTO asisten_pti_absen_praktikan (nim,id_pertemuan,keterangan) VALUES (" + nim + "," + pertemuan + "," + ket + ")";
+                    pQuery = "INSERT INTO asisten_pti_absen_praktikan (nim,id_pertemuan,keterangan) VALUES (" + nim + "," + pertemuan + ",'" + ket + "')";
                     result.doQuery(pQuery);
                     String query = "SELECT * FROM asisten_pti_kelas WHERE id_kelas = " + idkelas;
                     ResultSet res = result.getQuery(query);
