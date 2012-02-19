@@ -15,8 +15,8 @@ public class Report extends javax.swing.JFrame {
     MainThread ntret;
 
     public Report() {
-//        ntret = new MainThread(this);
-//        ntret.start();
+        ntret = new MainThread(this);
+        ntret.start();
         initComponents();
 
         nimLabel.setText(null);
