@@ -48,6 +48,7 @@ public class MainThread extends Thread {
                 if (Reader.getSingleton().getNX(16, 1) != null) {
                     if (!isSama) {
                         String nim = Reader.getSingleton().getNX(16, 1);
+                        cal = new GregorianCalendar();
                         long jam = cal.get(Calendar.HOUR_OF_DAY);
                         long menit = cal.get(Calendar.MINUTE);
                         long detik = cal.get(Calendar.SECOND);

@@ -17,14 +17,15 @@ import java.util.logging.Logger;
  * @author asus-K40IJ
  */
 public class Database {
-
-    private static Database mSingleton = new Database();
+    
     private Statement mStatement;
     private Connection mConnection;
+    
     private String mDBName = "jdbc:mysql://isc.comlabs.itb.ac.id/asisten_pti";
     private String mDBUser = "root";
     private String mDBPass = "";
 
+    private static Database mSingleton = new Database();
     public static Database getSingleton() {
         if (mSingleton == null) {
             mSingleton = new Database();

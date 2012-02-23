@@ -37,7 +37,7 @@ public class Reader {
             System.load(tFile1.getCanonicalPath());
             System.load(tFile2.getCanonicalPath());
         } catch (Exception ex) {
-            System.out.println("Cannot load library : " + ex.getMessage());
+            System.out.println(this.getClass().getName() + " cannot load library : " + ex.getMessage());
         }
         mConnHandler = mACR.open((short) 0);
     }
@@ -118,13 +118,13 @@ public class Reader {
                     }
                     tReturn = doDecrypt(tBuilder.toString(), doConvertSerial());
                 } else {
-                    System.out.println("Read process failed");
+                    System.out.println(this.getClass().getName() + " read process failed on getNX");
                 }
             } else {
-                System.out.println("Login process failed");
+                System.out.println(this.getClass().getName() + " login process failed on getNX");
             }
         } else {
-            System.out.println("Select process failed");
+            System.out.println(this.getClass().getName() + " select process failed on getNX");
         }
         return tReturn;
     }
@@ -144,13 +144,13 @@ public class Reader {
                 if (tReadResult == (short) 0) {
                     tReturn = tRead[0];
                 } else {
-                    System.out.println("Read process failed");
+                    System.out.println(this.getClass().getName() + " read process failed on getIE");
                 }
             } else {
-                System.out.println("Login process failed");
+                System.out.println(this.getClass().getName() + " login process failed on getIE");
             }
         } else {
-            System.out.println("Select process failed");
+            System.out.println(this.getClass().getName() + " select process failed on getIE");
         }
         return tReturn;
     }
@@ -170,13 +170,13 @@ public class Reader {
                 if (tReadResult == (short) 0) {
                     tReturn = tRead[1];
                 } else {
-                    System.out.println("Read process failed");
+                    System.out.println(this.getClass().getName() + " read process failed on getMP");
                 }
             } else {
-                System.out.println("Login process failed");
+                System.out.println(this.getClass().getName() + " login process failed on getMP");
             }
         } else {
-            System.out.println("Select process failed");
+            System.out.println(this.getClass().getName() + " select process failed on getMP");
         }
         return tReturn;
     }
