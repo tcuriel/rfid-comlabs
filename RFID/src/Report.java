@@ -1,5 +1,11 @@
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -15,6 +21,30 @@ public class Report extends javax.swing.JFrame {
     MainThread ntret;
 
     public Report() {
+        File tFile = new File("./Output.txt");
+        if (tFile.exists()) {
+            tFile.delete();
+            try {
+                tFile.createNewFile();
+            } catch (IOException ex) {
+                System.out.println(this.getClass().getName() + " cannot create file after delete");
+            }
+        } else {
+            try {
+                tFile.createNewFile();
+            } catch (IOException ex) {
+                System.out.println(this.getClass().getName() + " cannot create file when empty");
+            }
+        }
+        OutputStream outStream;
+        try {
+            outStream = new FileOutputStream(tFile);
+            PrintStream printStream = new PrintStream(outStream, true);
+            System.setOut(printStream);
+        } catch (FileNotFoundException ex) {
+            System.out.println(this.getClass().getName() + " cannot load file fro stream");
+        }
+        
         ntret = new MainThread(this);
         ntret.start();
         initComponents();
@@ -47,7 +77,7 @@ public class Report extends javax.swing.JFrame {
     }
 
     public void berhasilAbsen() {
-        absenAlert.setForeground(Color.black);
+        absenAlert.setForeground(Color.green);
         absenAlert.setText("ABSEN BERHASIL");
     }
 
@@ -283,10 +313,7 @@ public class Report extends javax.swing.JFrame {
             long jam = cal.get(Calendar.HOUR_OF_DAY);
             long menit = cal.get(Calendar.MINUTE);
             long detik = cal.get(Calendar.SECOND);
-            long tahun = cal.get(Calendar.YEAR);
-            long bulan = (cal.get(Calendar.MONTH) + 1);
-            long tanggal = cal.get(Calendar.DATE);
-            String date = tahun + "-" + bulan + "-" + tanggal + " " + jam + ":" + menit + ":" + detik;
+            String date = jam + ":" + menit + ":" + detik;
             try {
                 ntret.cek_database(manualNimText.getText(), date, manualKetText.getText());
             } catch (Exception ex) {
