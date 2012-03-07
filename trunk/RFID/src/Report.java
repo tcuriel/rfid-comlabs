@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -88,7 +87,7 @@ public class Report extends javax.swing.JFrame {
 
     public void kelasSalah() {
         absenAlert.setForeground(Color.red);
-        absenAlert.setText("SALAH KELAS");
+        absenAlert.setText("ABSENSI SUDAH DITUTUP");
     }
 
     @SuppressWarnings("unchecked")
@@ -114,6 +113,7 @@ public class Report extends javax.swing.JFrame {
         manualKetText = new javax.swing.JTextArea();
         submitButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
+        showLogButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Absensi PTI");
@@ -124,33 +124,33 @@ public class Report extends javax.swing.JFrame {
         jLabel1.setText("Laporan Kehadiran");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("RFID Reader"));
-        jPanel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jPanel1.setFont(new java.awt.Font("Tahoma", 0, 18));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel2.setText("NIM");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel3.setText("Kelas");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel4.setText("Tanggal");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel5.setText("Waktu Absen");
 
-        nimLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        nimLabel.setFont(new java.awt.Font("Tahoma", 0, 18));
         nimLabel.setText("jLabel6");
 
-        kelasLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        kelasLabel.setFont(new java.awt.Font("Tahoma", 0, 18));
         kelasLabel.setText("jLabel7");
 
-        dateLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        dateLabel.setFont(new java.awt.Font("Tahoma", 0, 18));
         dateLabel.setText("jLabel8");
 
-        timeLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        timeLabel.setFont(new java.awt.Font("Tahoma", 0, 18));
         timeLabel.setText("jLabel9");
 
-        absenAlert.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        absenAlert.setFont(new java.awt.Font("Tahoma", 0, 36));
         absenAlert.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         absenAlert.setText("SELAMAT DATANG");
 
@@ -202,16 +202,16 @@ public class Report extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Manual"));
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel6.setText("NIM");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel7.setText("Keterangan");
 
-        manualNimText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        manualNimText.setFont(new java.awt.Font("Tahoma", 0, 18));
 
         manualKetText.setColumns(20);
-        manualKetText.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
+        manualKetText.setFont(new java.awt.Font("Monospaced", 0, 16));
         manualKetText.setLineWrap(true);
         manualKetText.setRows(5);
         jScrollPane1.setViewportView(manualKetText);
@@ -267,6 +267,13 @@ public class Report extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        showLogButton.setText("Show Log");
+        showLogButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showLogButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -274,6 +281,7 @@ public class Report extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(showLogButton, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -290,6 +298,8 @@ public class Report extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(showLogButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -321,6 +331,13 @@ public class Report extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_submitButtonActionPerformed
+
+    private void showLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLogButtonActionPerformed
+        // TODO add your handling code here:
+        LogWindow log = new LogWindow(this, false);
+        log.setLocationRelativeTo(null);
+        log.setVisible(true);
+    }//GEN-LAST:event_showLogButtonActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -362,6 +379,7 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JTextArea manualKetText;
     private javax.swing.JTextField manualNimText;
     private javax.swing.JLabel nimLabel;
+    private javax.swing.JButton showLogButton;
     private javax.swing.JButton submitButton;
     private javax.swing.JLabel timeLabel;
     // End of variables declaration//GEN-END:variables

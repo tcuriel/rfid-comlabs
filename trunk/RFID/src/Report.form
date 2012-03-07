@@ -24,9 +24,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="showLogButton" alignment="0" pref="771" max="32767" attributes="0"/>
                   <Component id="jLabel1" alignment="0" pref="771" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
@@ -48,6 +49,8 @@
                   <Component id="jPanel1" max="32767" attributes="1"/>
                   <Component id="jPanel2" alignment="0" max="32767" attributes="1"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="showLogButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -324,5 +327,13 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="showLogButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Show Log"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showLogButtonActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>
