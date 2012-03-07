@@ -124,7 +124,7 @@ public class Reader {
                 System.out.println(this.getClass().getName() + " login process failed on getNX");
             }
         } else {
-            System.out.println(this.getClass().getName() + " select process failed on getNX");
+//            System.out.println(this.getClass().getName() + " select process failed on getNX");
         }
         return tReturn;
     }
@@ -150,7 +150,7 @@ public class Reader {
                 System.out.println(this.getClass().getName() + " login process failed on getIE");
             }
         } else {
-            System.out.println(this.getClass().getName() + " select process failed on getIE");
+//            System.out.println(this.getClass().getName() + " select process failed on getIE");
         }
         return tReturn;
     }
@@ -176,7 +176,7 @@ public class Reader {
                 System.out.println(this.getClass().getName() + " login process failed on getMP");
             }
         } else {
-            System.out.println(this.getClass().getName() + " select process failed on getMP");
+//            System.out.println(this.getClass().getName() + " select process failed on getMP");
         }
         return tReturn;
     }

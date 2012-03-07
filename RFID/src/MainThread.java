@@ -30,6 +30,7 @@ public class MainThread extends Thread {
     private Report report;
     private boolean isSama = false;
     private String currDate = "";
+    private String sqlDate = "";
     private GregorianCalendar cal;
 
     public MainThread(Report report) {
@@ -39,6 +40,7 @@ public class MainThread extends Thread {
         long bulan = (cal.get(Calendar.MONTH) + 1);
         long tanggal = cal.get(Calendar.DATE);
         currDate = tanggal + "/" + bulan + "/" + tahun;
+        sqlDate = tahun + "-" + bulan + "-" + tanggal;
     }
 
     @Override
@@ -78,7 +80,7 @@ public class MainThread extends Thread {
         ResultSet hasil = result.getQuery(pQuery);
         if (hasil.next()) {
             int idkelas = hasil.getInt("id_kelas");
-            pQuery = "SELECT * FROM asisten_pti_pertemuan WHERE id_kelas = " + idkelas + " AND absen_buka < '" + time + "' AND absen_tutup > '" + time + "'";
+            pQuery = "SELECT * FROM asisten_pti_pertemuan WHERE id_kelas = " + idkelas + " AND absen_buka < '" + time + "' AND absen_tutup > '" + time + "' AND tanggal = '" + sqlDate + "'";
             hasil = result.getQuery(pQuery);
             if (hasil.next()) {
                 int pertemuan = hasil.getInt("id_pertemuan");
