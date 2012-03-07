@@ -87,7 +87,7 @@ public class Report extends javax.swing.JFrame {
 
     public void kelasSalah() {
         absenAlert.setForeground(Color.red);
-        absenAlert.setText("ABSENSI SUDAH DITUTUP");
+        absenAlert.setText("ANDA TERLAMBAT");
     }
 
     @SuppressWarnings("unchecked")
